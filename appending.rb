@@ -61,6 +61,7 @@ module BlackStack
         end
 
         def self.cleanup_company(company)
+            return '' if company.nil?
             company = company.split(/ at /).last
             company.gsub!(/LLC/, '')
             company.gsub!(/Inc/, '')
