@@ -1,3 +1,4 @@
+# searches stored in the search folder
 @searches = [
     'Padilla.Trust-And-Safety.10',
 ]
