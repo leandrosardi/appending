@@ -1,8 +1,44 @@
 require 'csv'
 require 'email_verifier'
+require 'nokogiri'
 
 module BlackStack
     module Appending
+
+        module Parser
+            # parse search pages from sales navigator
+            def self.parse_sales_navigator_result_pages(search_name, l=nil)
+                # create logger if not passed
+                l = BlackStack::DummyLogger.new(nil) if l.nil?
+                # define output filename
+                output_file = "./searches/#{search_name}.csv" # the output file
+                raise 'Output file already exists.' if File.exists?(output_file)
+                output = File.open(output_file, 'w')
+                # parse
+                i = 0
+                source = "./searches/#{search_name}/*.html" # the files to be imported
+                Dir.glob(source).each do |file|
+                    doc = Nokogiri::HTML(open(file))
+                    lis = doc.xpath('//li[contains(@class, "artdeco-list__item")]')    
+                    lis.each { |li|
+                        i += 1
+                        doc2 = Nokogiri::HTML(li.inner_html)
+                        n1 = doc2.xpath('//div[contains(@class,"artdeco-entity-lockup__title")]/a/span').first
+                        n2 = doc2.xpath('//div[contains(@class,"artdeco-entity-lockup__subtitle")]/a').first
+                        line = []
+                        line << "\"#{n1.text.strip.gsub('"', '')}\"" if !n1.nil?
+                        line << "\"#{n2.text.strip.gsub('"', '')}\"" if !n2.nil?
+                        l.logs "#{i.to_s}, #{line.join(',')}"
+                        output.puts line.join(',')
+                        output.flush
+                        l.done
+                    }    
+                end    
+                # close output file    
+                output.close
+            end # def self.parse_sales_navigator_result_pages(search_name)
+        end # module Parser
+
         # return true if the domain get any random address as valid
         def self.catch_all?(domain)
             EmailVerifier.config do |config|

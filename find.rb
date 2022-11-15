@@ -32,5 +32,3 @@ input.each { |row|
     }
     l.logf "Found #{matches.size} matches in #{enlapsed_seconds} seconds."
 }
-
-

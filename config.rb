@@ -1,3 +1,8 @@
+@searches = [
+    'Padilla.Trust-And-Safety.10',
+]
+
+# 
 BlackStack::CSVIndexer.add_indexation({
     :name => 'ix.linkedin_url.us.01',
     :description => 'Find the email address, first name, last name, company, industry and location of US LinkedIn users from their URL.',
