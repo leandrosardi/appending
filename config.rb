@@ -549,3 +549,31 @@ BlackStack::CSVIndexer.add_indexation({
         :company_headcount => 24, 
     },
 })
+
+BlackStack::CSVIndexer.add_indexation({
+    :name => 'ix.persona.us.10',
+    :description => 'Find the email address, first name, last name, company, industry and location of any person from their company name, first name and last name; into the ZZ database.',
+    :input => DATA_PATH+'/sources/zz/*.csv',
+    :output => DATA_PATH+'/indexes/',
+    :log => DATA_PATH+'/logs',
+    :keys => [:company_name, :first_name, :last_name],
+    :mapping => {
+        :first_name => 0,
+        :last_name => 2,
+        :email => 12,
+        :job_title => 3,
+        #:seniority => 5,
+        #:department => 6,
+        :phone => 10,
+        #:linkedin_url => 8,
+        :state => 7,
+        :company_name => 4,
+        :company_domain => 11,
+        #:company_phone => 13,
+        :industry => 15,
+        #:sic => 15,
+        #:company_linkedin_url => 22,
+        :company_revenue => 13,
+        :company_headcount => 14, 
+    },
+})
