@@ -28,7 +28,7 @@ a.each { |search_name|
     # ingest the bites
     Dir.glob(source).each do |input_filename|
         # build output filename
-        output_filename = input_filename.gsub('.csv', '.matches.persona.us.09')
+        output_filename = input_filename.gsub('.csv', '.matches')
         # validate the file does not exist
         if File.exists?(output_filename)
             l.logf "File #{output_filename} already exists."
@@ -55,7 +55,8 @@ a.each { |search_name|
                 matches = []
                 enlapsed_seconds = 0
                 files_processed = 0
-                BlackStack::CSVIndexer.indexes.select { |i| i.name =~ /ix\.persona.us\.09/ }.each { |i|
+#                BlackStack::CSVIndexer.indexes.select { |i| i.name =~ /ix\.persona.us\.09/ }.each { |i|
+                BlackStack::CSVIndexer.indexes.select { |i| i.name =~ /persona/ }.each { |i|
                     #l.logs "Searching into #{i.name}..."
                     ret = i.find([company, fname, lname], false, nil)
                     matches += ret[:matches]
@@ -64,7 +65,7 @@ a.each { |search_name|
                     # if there is matches, write them into the output file
                     if ret[:matches].length > 0
                         ret[:matches].each { |m| 
-                            line = "\"#{m.join('","')}\""
+                            line = "\"#{i.name}\",\"#{m.join('","')}\""
                             output.puts line
                         }
                         output.flush
