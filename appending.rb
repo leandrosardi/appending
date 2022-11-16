@@ -11,12 +11,12 @@ module BlackStack
                 # create logger if not passed
                 l = BlackStack::DummyLogger.new(nil) if l.nil?
                 # define output filename
-                output_file = "./searches/#{search_name}.csv" # the output file
+                output_file = "#{DATA_PATH}/searches/#{search_name}.csv" # the output file
                 raise 'Output file already exists.' if File.exists?(output_file)
                 output = File.open(output_file, 'w')
                 # parse
                 i = 0
-                source = "./searches/#{search_name}/*.html" # the files to be imported
+                source = "#{DATA_PATH}/searches/#{search_name}/*.html" # the files to be imported
                 Dir.glob(source).each do |file|
                     doc = Nokogiri::HTML(open(file))
                     lis = doc.xpath('//li[contains(@class, "artdeco-list__item")]')    

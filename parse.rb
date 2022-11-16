@@ -3,13 +3,13 @@ require 'simple_command_line_parser'
 require_relative './config'
 require_relative './appending'
 
-l = BlackStack::LocalLogger.new('./logs/parse.log')
+l = BlackStack::LocalLogger.new(DATA_PATH+'/logs/parse.log')
 
 # rename the HMTL files, removing the 'page ' prefix added when downloading
 l.logs 'Renaming HTML files...'
 @searches.each { |search_name|
     # roll back ingested files as not ingested
-    source = "./searches/#{search_name}/page*.html" # the files to be imported
+    source = "#{DATA_PATH}/searches/#{search_name}/page*.html" # the files to be imported
     # ingest the bites
     Dir.glob(source).each do |file|
         # get the name of the file from the full path

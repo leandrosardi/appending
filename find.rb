@@ -3,7 +3,7 @@ require 'simple_command_line_parser'
 require_relative './config'
 require_relative './appending'
 
-l = BlackStack::LocalLogger.new('./logs/find.log')
+l = BlackStack::LocalLogger.new(DATA_PATH+'/logs/find.log')
 
 # 
 parser = BlackStack::SimpleCommandLineParser.new(
@@ -24,7 +24,7 @@ a = parser.value('search') == 'all' ? @searches : @searches.select { |s| s == pa
 l.logs 'Searching...'
 a.each { |search_name|
     # roll back ingested files as not ingested
-    source = "./searches/#{search_name}.csv" # the files to be imported
+    source = "#{DATA_PATH}/searches/#{search_name}.csv" # the files to be imported
     # ingest the bites
     Dir.glob(source).each do |input_filename|
         # build output filename

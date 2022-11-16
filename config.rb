@@ -1,3 +1,5 @@
+DATA_PATH = '/home/leandro/.appending'
+
 # searches stored in the search folder
 @searches = [
 #    'Padilla.Trust-And-Safety.10',
@@ -9,9 +11,9 @@
 BlackStack::CSVIndexer.add_indexation({
     :name => 'ix.linkedin_url.us.01',
     :description => 'Find the email address, first name, last name, company, industry and location of US LinkedIn users from their URL.',
-    :input => './sources/li/Data-with-Country1/united-states/business_email_united_states/business_email_united_states_*.csv',
-    :output => './indexes/',
-    :log => './logs/',
+    :input => DATA_PATH+'/sources/li/Data-with-Country1/united-states/business_email_united_states/business_email_united_states_*.csv',
+    :output => DATA_PATH+'/indexes/',
+    :log => DATA_PATH+'/logs',
     :keys => [:linkedin_url],
     :mapping => {
         :first_name => 0,
@@ -39,9 +41,9 @@ BlackStack::CSVIndexer.add_indexation({
 BlackStack::CSVIndexer.add_indexation({
     :name => 'ix.linkedin_url.us.02',
     :description => 'Find the email address, first name, last name, company, industry and location of US LinkedIn users from their URL.',
-    :input => './sources/li/Data-with-Country1/united-states/business_email_united_states/business_unitedstate_10*.csv',
-    :output => './indexes/',
-    :log => './logs/',
+    :input => DATA_PATH+'/sources/li/Data-with-Country1/united-states/business_email_united_states/business_unitedstate_10*.csv',
+    :output => DATA_PATH+'/indexes/',
+    :log => DATA_PATH+'/logs',
     :keys => [:linkedin_url],
     :mapping => {
         :first_name => 0,
@@ -69,9 +71,9 @@ BlackStack::CSVIndexer.add_indexation({
 BlackStack::CSVIndexer.add_indexation({
     :name => 'ix.linkedin_url.us.03',
     :description => 'Find the email address, first name, last name, company, industry and location of US LinkedIn users from their URL.',
-    :input => './sources/li/Data-with-Country1/united-states/business_email_united_states/business_unitedstate_1-*.csv',
-    :output => './indexes/',
-    :log => './logs/',
+    :input => DATA_PATH+'/sources/li/Data-with-Country1/united-states/business_email_united_states/business_unitedstate_1-*.csv',
+    :output => DATA_PATH+'/indexes/',
+    :log => DATA_PATH+'/logs',
     :keys => [:linkedin_url],
     :mapping => {
         :first_name => 0,
@@ -99,9 +101,9 @@ BlackStack::CSVIndexer.add_indexation({
 BlackStack::CSVIndexer.add_indexation({
     :name => 'ix.linkedin_url.us.04',
     :description => 'Find the email address, first name, last name, company, industry and location of US LinkedIn users from their URL.',
-    :input => './sources/li/Data-with-Country1/united-states/personal_email_united_states/personal_email_united_states-*.csv',
-    :output => './indexes/',
-    :log => './logs/',
+    :input => DATA_PATH+'/sources/li/Data-with-Country1/united-states/personal_email_united_states/personal_email_united_states-*.csv',
+    :output => DATA_PATH+'/indexes/',
+    :log => DATA_PATH+'/logs',
     :keys => [:linkedin_url],
     :mapping => {
         :first_name => 0,
@@ -129,9 +131,9 @@ BlackStack::CSVIndexer.add_indexation({
 BlackStack::CSVIndexer.add_indexation({
     :name => 'ix.linkedin_url.us.05',
     :description => 'Find the email address, first name, last name, company, industry and location of US LinkedIn users from their URL.',
-    :input => './sources/li/Data-with-Country1/united-states/personal_email_united_states/personal_unitedstate_10*.csv',
-    :output => './indexes/',
-    :log => './logs/',
+    :input => DATA_PATH+'/sources/li/Data-with-Country1/united-states/personal_email_united_states/personal_unitedstate_10*.csv',
+    :output => DATA_PATH+'/indexes/',
+    :log => DATA_PATH+'/logs',
     :keys => [:linkedin_url],
     :mapping => {
         :first_name => 0,
@@ -159,9 +161,9 @@ BlackStack::CSVIndexer.add_indexation({
 BlackStack::CSVIndexer.add_indexation({
     :name => 'ix.linkedin_url.us.06',
     :description => 'Find the email address, first name, last name, company, industry and location of US LinkedIn users from their URL.',
-    :input => './sources/li/Data-with-Country1/united-states/personal_email_united_states/personal_unitedstate_1-*.csv',
-    :output => './indexes/',
-    :log => './logs/',
+    :input => DATA_PATH+'/sources/li/Data-with-Country1/united-states/personal_email_united_states/personal_unitedstate_1-*.csv',
+    :output => DATA_PATH+'/indexes/',
+    :log => DATA_PATH+'/logs',
     :keys => [:linkedin_url],
     :mapping => {
         :first_name => 0,
@@ -190,9 +192,9 @@ BlackStack::CSVIndexer.add_indexation({
 BlackStack::CSVIndexer.add_indexation({
     :name => 'ix.linkedin_url.uk',
     :description => 'Find the email address, first name, last name, company, industry and location of UK LinkedIn users from their URL.',
-    :input => './sources/li/Data-with-Country1/united-kingdom/*.csv',
-    :output => './indexes/',
-    :log => './logs/',
+    :input => DATA_PATH+'/sources/li/Data-with-Country1/united-kingdom/*.csv',
+    :output => DATA_PATH+'/indexes/',
+    :log => DATA_PATH+'/logs',
     :keys => [:linkedin_url],
     :mapping => {
         :first_name => 0,
@@ -220,9 +222,9 @@ BlackStack::CSVIndexer.add_indexation({
 BlackStack::CSVIndexer.add_indexation({
     :name => 'ix.linkedin_url.ca',
     :description => 'Find the email address, first name, last name, company, industry and location of UK LinkedIn users from their URL.',
-    :input => './sources/li/Data-with-Country1/canada/*.csv',
-    :output => './sources/indexes/',
-    :log => './sources/logs/',
+    :input => DATA_PATH+'/sources/li/Data-with-Country1/canada/*.csv',
+    :output => DATA_PATH+'/sources/indexes/',
+    :log => DATA_PATH+'/logs',
     :keys => [:linkedin_url],
     :mapping => {
         :first_name => 0,
@@ -251,9 +253,9 @@ BlackStack::CSVIndexer.add_indexation({
 BlackStack::CSVIndexer.add_indexation({
     :name => 'ix.linkedin_url.us.09',
     :description => 'Find the email address, first name, last name, company, industry and location of LinkedIn users from their URL, searching into the ZI database.',
-    :input => './sources/zi/*.csv',
-    :output => './indexes/',
-    :log => './logs/',
+    :input => DATA_PATH+'/sources/zi/*.csv',
+    :output => DATA_PATH+'/indexes/',
+    :log => DATA_PATH+'/logs',
     :keys => [:linkedin_url],
     :mapping => {
         :first_name => 0,
@@ -281,9 +283,9 @@ BlackStack::CSVIndexer.add_indexation({
 BlackStack::CSVIndexer.add_indexation({
     :name => 'ix.persona.us.01',
     :description => 'Find the email address, first name, last name, company, industry and location of US LinkedIn users from their URL.',
-    :input => './sources/li/Data-with-Country1/united-states/business_email_united_states/business_email_united_states_*.csv',
-    :output => './indexes/',
-    :log => './logs/',
+    :input => DATA_PATH+'/sources/li/Data-with-Country1/united-states/business_email_united_states/business_email_united_states_*.csv',
+    :output => DATA_PATH+'/indexes/',
+    :log => DATA_PATH+'/logs',
     :keys => [:company_name, :first_name, :last_name],
     :mapping => {
         :first_name => 0,
@@ -311,9 +313,9 @@ BlackStack::CSVIndexer.add_indexation({
 BlackStack::CSVIndexer.add_indexation({
     :name => 'ix.persona.us.02',
     :description => 'Find the email address, first name, last name, company, industry and location of US LinkedIn users from their URL.',
-    :input => './sources/li/Data-with-Country1/united-states/business_email_united_states/business_unitedstate_10*.csv',
-    :output => './indexes/',
-    :log => './logs/',
+    :input => DATA_PATH+'/sources/li/Data-with-Country1/united-states/business_email_united_states/business_unitedstate_10*.csv',
+    :output => DATA_PATH+'/indexes/',
+    :log => DATA_PATH+'/logs',
     :keys => [:company_name, :first_name, :last_name],
     :mapping => {
         :first_name => 0,
@@ -341,9 +343,9 @@ BlackStack::CSVIndexer.add_indexation({
 BlackStack::CSVIndexer.add_indexation({
     :name => 'ix.persona.us.03',
     :description => 'Find the email address, first name, last name, company, industry and location of US LinkedIn users from their URL.',
-    :input => './sources/li/Data-with-Country1/united-states/business_email_united_states/business_unitedstate_1-*.csv',
-    :output => './indexes/',
-    :log => './logs/',
+    :input => DATA_PATH+'/sources/li/Data-with-Country1/united-states/business_email_united_states/business_unitedstate_1-*.csv',
+    :output => DATA_PATH+'/indexes/',
+    :log => DATA_PATH+'/logs',
     :keys => [:company_name, :first_name, :last_name],
     :mapping => {
         :first_name => 0,
@@ -371,9 +373,9 @@ BlackStack::CSVIndexer.add_indexation({
 BlackStack::CSVIndexer.add_indexation({
     :name => 'ix.persona.us.04',
     :description => 'Find the email address, first name, last name, company, industry and location of US LinkedIn users from their URL.',
-    :input => './sources/li/Data-with-Country1/united-states/personal_email_united_states/personal_email_united_states-*.csv',
-    :output => './indexes/',
-    :log => './logs/',
+    :input => DATA_PATH+'/sources/li/Data-with-Country1/united-states/personal_email_united_states/personal_email_united_states-*.csv',
+    :output => DATA_PATH+'/indexes/',
+    :log => DATA_PATH+'/logs',
     :keys => [:company_name, :first_name, :last_name],
     :mapping => {
         :first_name => 0,
@@ -401,9 +403,9 @@ BlackStack::CSVIndexer.add_indexation({
 BlackStack::CSVIndexer.add_indexation({
     :name => 'ix.persona.us.05',
     :description => 'Find the email address, first name, last name, company, industry and location of US LinkedIn users from their URL.',
-    :input => './sources/li/Data-with-Country1/united-states/personal_email_united_states/personal_unitedstate_10*.csv',
-    :output => './indexes/',
-    :log => './logs/',
+    :input => DATA_PATH+'/sources/li/Data-with-Country1/united-states/personal_email_united_states/personal_unitedstate_10*.csv',
+    :output => DATA_PATH+'/indexes/',
+    :log => DATA_PATH+'/logs',
     :keys => [:company_name, :first_name, :last_name],
     :mapping => {
         :first_name => 0,
@@ -431,9 +433,9 @@ BlackStack::CSVIndexer.add_indexation({
 BlackStack::CSVIndexer.add_indexation({
     :name => 'ix.persona.us.06',
     :description => 'Find the email address, first name, last name, company, industry and location of US LinkedIn users from their URL.',
-    :input => './sources/li/Data-with-Country1/united-states/personal_email_united_states/personal_unitedstate_1-*.csv',
-    :output => './indexes/',
-    :log => './logs/',
+    :input => DATA_PATH+'/sources/li/Data-with-Country1/united-states/personal_email_united_states/personal_unitedstate_1-*.csv',
+    :output => DATA_PATH+'/indexes/',
+    :log => DATA_PATH+'/logs',
     :keys => [:company_name, :first_name, :last_name],
     :mapping => {
         :first_name => 0,
@@ -462,9 +464,9 @@ BlackStack::CSVIndexer.add_indexation({
 BlackStack::CSVIndexer.add_indexation({
     :name => 'ix.linkedin_url.uk',
     :description => 'Find the email address, first name, last name, company, industry and location of UK LinkedIn users from their URL.',
-    :input => './sources/li/Data-with-Country1/united-kingdom/*.csv',
-    :output => './indexes/',
-    :log => './logs/',
+    :input => DATA_PATH+'/sources/li/Data-with-Country1/united-kingdom/*.csv',
+    :output => DATA_PATH+'/indexes/',
+    :log => DATA_PATH+'/logs',
     :keys => [:linkedin_url],
     :mapping => {
         :first_name => 0,
@@ -492,9 +494,9 @@ BlackStack::CSVIndexer.add_indexation({
 BlackStack::CSVIndexer.add_indexation({
     :name => 'ix.linkedin_url.ca',
     :description => 'Find the email address, first name, last name, company, industry and location of UK LinkedIn users from their URL.',
-    :input => './sources/li/Data-with-Country1/canada/*.csv',
-    :output => './sources/indexes/',
-    :log => './sources/logs/',
+    :input => DATA_PATH+'/sources/li/Data-with-Country1/canada/*.csv',
+    :output => DATA_PATH+'/sources/indexes/',
+    :log => DATA_PATH+'/logs',
     :keys => [:linkedin_url],
     :mapping => {
         :first_name => 0,
@@ -523,9 +525,9 @@ BlackStack::CSVIndexer.add_indexation({
 BlackStack::CSVIndexer.add_indexation({
     :name => 'ix.persona.us.09',
     :description => 'Find the email address, first name, last name, company, industry and location of any person from their company name, first name and last name; into the ZI database.',
-    :input => './sources/zi/*.csv',
-    :output => './indexes/',
-    :log => './logs/',
+    :input => DATA_PATH+'/sources/zi/*.csv',
+    :output => DATA_PATH+'/indexes/',
+    :log => DATA_PATH+'/logs',
     :keys => [:company_name, :first_name, :last_name],
     :mapping => {
         :first_name => 0,
