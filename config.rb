@@ -1,6 +1,8 @@
 # searches stored in the search folder
 @searches = [
-    'Padilla.Trust-And-Safety.10',
+#    'Padilla.Trust-And-Safety.10',
+    'APG.1',
+    'Magnum.1',
 ]
 
 # 

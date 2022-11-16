@@ -5,20 +5,36 @@ require_relative './appending'
 
 l = BlackStack::LocalLogger.new('./logs/find.log')
 
+# 
+parser = BlackStack::SimpleCommandLineParser.new(
+  :description => 'This command will launch a searching of people.', 
+  :configuration => [{
+    :name=>'search', 
+    :mandatory=>false, 
+    :description=>'Name of the serch. Use `all` for run all searches. Default: `all`.', 
+    :type=>BlackStack::SimpleCommandLineParser::STRING,
+    :default => 'all',
+  }]
+)
 
-# rename the HMTL files, removing the 'page ' prefix added when downloading
+# getting the searches to process
+a = parser.value('search') == 'all' ? @searches : @searches.select { |s| s == parser.value('search') }
+
+# find matches in the index persona.us.09
 l.logs 'Searching...'
-@searches.each { |search_name|
+a.each { |search_name|
     # roll back ingested files as not ingested
     source = "./searches/#{search_name}.csv" # the files to be imported
     # ingest the bites
     Dir.glob(source).each do |input_filename|
         # build output filename
-        output_filename = input_filename.gsub('.csv', '.matches')
+        output_filename = input_filename.gsub('.csv', '.matches.persona.us.09')
         # validate the file does not exist
-#        if File.exists?(output_filename)
-#            l.logf "File #{output_filename} already exists."
-#        else
+        if File.exists?(output_filename)
+            l.logf "File #{output_filename} already exists."
+        else
+            # stats initialization
+            total_leads_matches = 0
             # open CSV file
             input = CSV.open(input_filename, 'r')
             # open CSV file
@@ -39,7 +55,7 @@ l.logs 'Searching...'
                 matches = []
                 enlapsed_seconds = 0
                 files_processed = 0
-                BlackStack::CSVIndexer.indexes.select { |i| i.name =~ /ix\.persona/ }.each { |i|
+                BlackStack::CSVIndexer.indexes.select { |i| i.name =~ /ix\.persona.us\.09/ }.each { |i|
                     #l.logs "Searching into #{i.name}..."
                     ret = i.find([company, fname, lname], false, nil)
                     matches += ret[:matches]
@@ -55,12 +71,16 @@ l.logs 'Searching...'
                     end
                     #l.logf "#{ret[:matches].to_s}. #{ret[:files_processed].to_s} files processed. #{ret[:enlapsed_seconds]} seconds."
                 }
-                l.logf "Found #{matches.size} matches in #{files_processed.to_s}, in #{enlapsed_seconds} seconds."
+                # log the results
+                total_leads_matches += 1 if matches.length > 0
+                match_rate = ((total_leads_matches.to_f / i.to_f).to_f * 100.to_f).ceil.to_i
+                #l.logf "Found #{matches.size} matches in #{files_processed.to_s}, in #{enlapsed_seconds} seconds."
+                l.logf "#{matches.size.to_s} (#{match_rate}%)"
             }
             # close the files
             input.close
             output.close
-#        end
+        end
     end
 }
 l.done
