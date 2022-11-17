@@ -55,7 +55,6 @@ a.each { |search_name|
                 matches = []
                 enlapsed_seconds = 0
                 files_processed = 0
-#                BlackStack::CSVIndexer.indexes.select { |i| i.name =~ /ix\.persona.us\.09/ }.each { |i|
                 BlackStack::CSVIndexer.indexes.select { |i| i.name =~ /persona/ }.each { |i|
                     #l.logs "Searching into #{i.name}..."
                     ret = i.find([company, fname, lname], false, nil)
