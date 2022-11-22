@@ -53,7 +53,7 @@ b = 0
                 lname = BlackStack::Appending::cleanup_lname(name)
                 # get the company name
                 company = row[1]
-                cname = BlackStack::Appending::cleanup_company(company)
+                cname = company #BlackStack::Appending::cleanup_company(company)
                 # log
                 l.logs "#{i.to_s}. #{fname} #{lname} at #{cname}... "
                 #l.logs "#{i.to_s}. #{row}... "
@@ -68,7 +68,7 @@ b = 0
                     b += 1
                     BlackStack::CSVIndexer.indexes.select { |i| i.name =~ /persona/ }.each { |i|
                         #l.logs "Searching into #{i.name}..."
-                        ret = i.find([cname], false, nil)
+                        ret = i.find([cname], true, nil)
                         # add name of thindex to the matches, in order to do a reverse-mapping later.
                         ret[:matches].each { |m| m << i.name }
                         # add to the list of matches
@@ -110,12 +110,15 @@ b = 0
                         # run email apending
                         emails = []
                         domains.each { |domain|
-print '.'
+#print '.'
+#                            l.logs "Appending emails for #{fname}, #{lname}, #{domain}..."
                             begin
-                                emails += BlackStack::Appending::append(fname, lname, domain) 
+                                appends = BlackStack::Appending::append(fname, lname, domain) 
+                                emails += appends
+#                                l.logf appends.size.to_s
                                 break if emails.size>0
                             rescue Exception => e
-                                # nothing to do here
+#                                l.logf "Error: #{e.message}"
                             end
                         }
                         total_leads_appends += 1 if emails.length > 0
