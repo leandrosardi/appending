@@ -116,7 +116,8 @@ module BlackStack
             # stage 5: choose the first part of the company name
             company.split(' ').each { |word|
                 ret += word + ' '
-                break if word.size >= 5 || ret.split(' ').size > 2
+                #break if word.size >= 5 || ret.split(' ').size > 2
+                break if ret.split(' ').size > 2
             } 
             ret.strip!
             # return
