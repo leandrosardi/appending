@@ -23,12 +23,25 @@ module BlackStack
                     lis.each { |li|
                         i += 1
                         doc2 = Nokogiri::HTML(li.inner_html)
+                        # this is where to find the full name of the lead
                         n1 = doc2.xpath('//div[contains(@class,"artdeco-entity-lockup__title")]/a/span').first
+                        # this is where to find the name of the company, when it has a link to a linkedin company page
                         n2 = doc2.xpath('//div[contains(@class,"artdeco-entity-lockup__subtitle")]/a').first
+                        # this is where to find the name of the company, when it has not a link to a linkedin company page
+                        company_name = nil
+                        if n2
+                            company_name = n2.text
+                        else
+                            n2 = doc2.xpath('//div[contains(@class,"artdeco-entity-lockup__subtitle")]').first 
+                            if n2
+                                company_name = n2.text.split("\n").reject { |s| s.strip.empty? }.last.strip
+                            end
+                        end
+                        # add the information to the output file
                         line = []
-                        line << "\"#{n1.text.strip.gsub('"', '')}\"" if !n1.nil?
-                        line << "\"#{n2.text.strip.gsub('"', '')}\"" if !n2.nil?
-                        l.logs "#{i.to_s}, #{line.join(',')}"
+                        line << "\"#{n1.text.strip.gsub('"', '')}\"" if n1
+                        line << "\"#{company_name.strip.gsub('"', '')}\"" if company_name
+                        l.logs "#{i.to_s}, #{line.join(',')}... "
                         output.puts line.join(',')
                         output.flush
                         l.done

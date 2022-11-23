@@ -26,7 +26,7 @@ l.logs 'Parsing HTML files...'
 @searches.each { |search_name|
     l.logs "Folder #{search_name}... "
     begin
-        BlackStack::Appending::Parser.parse_sales_navigator_result_pages(search_name, nil)
+        BlackStack::Appending::Parser.parse_sales_navigator_result_pages(search_name, l)
         l.done
     rescue => e
         l.logf e.message
