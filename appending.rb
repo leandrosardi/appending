@@ -46,7 +46,6 @@ module BlackStack
 
         # verify an email address using the AWS IP address of our website, wich is more reliable
         def self.verify(email)
-=begin
             url = "https://connectionsphere.com/api1.0/emails/verify.json"
             params = {
                 :email => email,
@@ -54,13 +53,13 @@ module BlackStack
             res = BlackStack::Netting::call_get(url, params)
             parsed = JSON.parse(res.body)
             parsed['status'] == 'success'
-=end
+=begin
             EmailVerifier.config do |config|
                 config.verifier_email = "leandro.sardi@expandedventure.com"
             end
             res = EmailVerifier.check(email)
-binding.pry if res
             res
+=end
         end
 
         # verify an email address

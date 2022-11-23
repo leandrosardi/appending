@@ -58,7 +58,7 @@ a.each { |search_name|
                 enlapsed_seconds = 0
                 files_processed = 0
                 BlackStack::CSVIndexer.indexes.select { |i| i.name =~ /persona/ }.each { |i|
-                    l.logs "Searching into #{i.name}..."
+#                    l.logs "Searching into #{i.name}..."
                     ret = i.find([company, fname, lname], false, nil)
                     # add name of thindex to the matches, in order to do a reverse-mapping later.
                     ret[:matches].each { |m| m << i.name }
@@ -68,28 +68,43 @@ a.each { |search_name|
                     files_processed += ret[:files_processed]
                     # if there is matches, write them into the output file
                     if ret[:matches].length > 0
+=begin
                         ret[:matches].each { |m| 
-                            line = "\"#{i.name}\",\"#{m.join('","')}\""
+                            line = "\"#{m.join('","')}\""
                             output.puts line
                         }
                         output.flush
-
+=end
+                        p = [i.position_of(:email), i.position_of(:email1), i.position_of(:email2)]
+                        ret[:matches].each { |m|
+                            output.puts "\"#{fname}\",\"#{lname}\",\"#{m[p[0]+2]}\"" if p[0]
+                            output.puts "\"#{fname}\",\"#{lname}\",\"#{m[p[1]+2]}\"" if p[1]
+                            output.puts "\"#{fname}\",\"#{lname}\",\"#{m[p[2]+2]}\"" if p[2]
+                            output.flush
+                        }
+=begin
                         # get the position of the emails inside the matches
                         p = [i.position_of(:email), i.position_of(:email1), i.position_of(:email2)]
                         q = i.position_of(:company_domain)
                         # verify emails
                         ret[:matches].each { |m|
-                            #puts "Email: #{m[p[0]+2]}" if p[0]
-                            appends << m[p[0]+2] if p[0] && BlackStack::Appending.verify(p[0])
-                            appends << m[p[1]+2] if p[1] && BlackStack::Appending.verify(p[1])
-                            appends << m[p[2]+2] if p[2] && BlackStack::Appending.verify(p[2])
-                            if q 
-                                domain = m[q+2]
-                                appends += BlackStack::Appending.append(fname, lname, domain)
+                            l.logs "Verifying emails..."
+                            begin
+                                appends << m[p[0]+2] if p[0] && BlackStack::Appending.verify(m[p[0]+2])
+                                appends << m[p[1]+2] if p[1] && BlackStack::Appending.verify(m[p[1]+2])
+                                appends << m[p[2]+2] if p[2] && BlackStack::Appending.verify(m[p[2]+2])
+                                if q 
+                                    domain = m[q+2]
+                                    appends += BlackStack::Appending.append(fname, lname, domain)
+                                end
+                                l.logf "done (#{appends.size.to_s})"
+                            rescue => e
+                                l.logf "error (#{e.message})"
                             end
                         }
+=end
                     end
-                    l.logf "#{ret[:matches].size} matches. #{appends.size} appends. #{ret[:files_processed].to_s} files processed. #{ret[:enlapsed_seconds]} seconds."
+#                    l.logf "#{ret[:matches].size} matches. #{appends.size} appends. #{ret[:files_processed].to_s} files processed. #{ret[:enlapsed_seconds]} seconds."
                 }
                 # log the results
                 total_leads_matches += 1 if matches.length > 0

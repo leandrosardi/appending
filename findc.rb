@@ -12,7 +12,7 @@ puts EmailVerifier.check(email)
 exit(0)
 =end
 
-l = BlackStack::LocalLogger.new(DATA_PATH+'/logs/find.log')
+l = BlackStack::LocalLogger.new(DATA_PATH+'/logs/findc.log')
 
 # 
 parser = BlackStack::SimpleCommandLineParser.new(
@@ -84,6 +84,7 @@ b = 0
                         matches += ret[:matches]
                         enlapsed_seconds += ret[:enlapsed_seconds]
                         files_processed += ret[:files_processed]
+=begin
                         # if there is matches, write them into the output file
                         if ret[:matches].length > 0
                             ret[:matches].each { |m| 
@@ -92,6 +93,7 @@ b = 0
                             }
                             output.flush
                         end
+=end
                         #l.logf "#{ret[:matches].to_s}. #{ret[:files_processed].to_s} files processed. #{ret[:enlapsed_seconds]} seconds."
                     }
                     # log the results
@@ -119,14 +121,18 @@ b = 0
                         # run email apending
                         emails = []
                         domains.each { |domain|
-#print '.'
+print '.'
+                            output.puts "\"#{fname}\",\"#{lname}\",\"#{domain}\""
+                            output.flush
 #                            l.logs "Appending emails for #{fname}, #{lname}, #{domain}..."
                             begin
 #binding.pry
                                 appends = BlackStack::Appending.append(fname, lname, domain) 
                                 emails += appends
+                                output.puts appends.map { |e| "Appended:\"#{e}\"" }.join("\n")
+                                output.flush
 #                                l.logf appends.size.to_s
-                                break if emails.size>0
+                                #break if emails.size>0
                             rescue Exception => e
 #                                l.logf "Error: #{e.message}"
                             end
