@@ -3,6 +3,15 @@ require 'simple_command_line_parser'
 require_relative './config'
 require_relative './appending'
 
+=begin
+email='charles.cathey.p2tm@statefarm.com'
+EmailVerifier.config do |config|
+    config.verifier_email = "leandro.sardi@expandedventure.com"
+end
+puts EmailVerifier.check(email)
+exit(0)
+=end
+
 l = BlackStack::LocalLogger.new(DATA_PATH+'/logs/find.log')
 
 # 
@@ -113,7 +122,8 @@ b = 0
 #print '.'
 #                            l.logs "Appending emails for #{fname}, #{lname}, #{domain}..."
                             begin
-                                appends = BlackStack::Appending::append(fname, lname, domain) 
+#binding.pry
+                                appends = BlackStack::Appending.append(fname, lname, domain) 
                                 emails += appends
 #                                l.logf appends.size.to_s
                                 break if emails.size>0

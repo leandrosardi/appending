@@ -41,14 +41,12 @@ module BlackStack
 
         # return true if the domain get any random address as valid
         def self.catch_all?(domain)
-            EmailVerifier.config do |config|
-                config.verifier_email = "leandro.sardi@expandedventure.com"
-            end
-            EmailVerifier.check("008e77980535470e848a4ca859a83db0@#{domain}")
+            BlackStack::Appending.verify("008e77980535470e848a4ca859a83db0@#{domain}")
         end
 
         # verify an email address using the AWS IP address of our website, wich is more reliable
         def self.verify(email)
+=begin
             url = "https://connectionsphere.com/api1.0/emails/verify.json"
             params = {
                 :email => email,
@@ -56,6 +54,13 @@ module BlackStack
             res = BlackStack::Netting::call_get(url, params)
             parsed = JSON.parse(res.body)
             parsed['status'] == 'success'
+=end
+            EmailVerifier.config do |config|
+                config.verifier_email = "leandro.sardi@expandedventure.com"
+            end
+            res = EmailVerifier.check(email)
+binding.pry if res
+            res
         end
 
         # verify an email address
@@ -78,6 +83,7 @@ module BlackStack
                     "#{fname[0]}#{lname}@#{domain}",
                     "#{fname[0]}.#{lname}@#{domain}",
                 ].each { |email|
+#binding.pry
                     ret << email.downcase if verify(email)
                 }
             end
