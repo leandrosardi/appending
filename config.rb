@@ -5,6 +5,7 @@ DATA_PATH = '/home/leandro/.appending'
 #    'Padilla.Trust-And-Safety.10',
     'APG.1',
     'Magnum.1',
+    'APG.2',
 ]
 
 # 

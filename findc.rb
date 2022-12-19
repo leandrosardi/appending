@@ -105,6 +105,8 @@ b = 0
                     if matches.size==0
                         #l.logf "Found #{matches.size} matches in #{files_processed.to_s}, in #{enlapsed_seconds} seconds."
                         l.logf "#{matches.size.to_s} (#{match_rate}%)"
+                    elsif cname == 'Self-employed'
+                        l.logf 'Self-employed'
                     else
                         domains = matches.map { |m|
                             # get the name of the index
@@ -122,17 +124,15 @@ b = 0
                         emails = []
                         domains.each { |domain|
 print '.'
-                            output.puts "\"#{fname}\",\"#{lname}\",\"#{domain}\""
-                            output.flush
 #                            l.logs "Appending emails for #{fname}, #{lname}, #{domain}..."
                             begin
-#binding.pry
                                 appends = BlackStack::Appending.append(fname, lname, domain) 
                                 emails += appends
-                                output.puts appends.map { |e| "Appended:\"#{e}\"" }.join("\n")
-                                output.flush
+                                appends.each { |email|
+                                    output.puts "\"#{fname}\",\"#{lname}\",\"#{cname}\",\"#{email}\""
+                                    output.flush
+                                }
 #                                l.logf appends.size.to_s
-                                #break if emails.size>0
                             rescue Exception => e
 #                                l.logf "Error: #{e.message}"
                             end
@@ -149,7 +149,7 @@ print '.'
             output.close
 l.logf "#{a.to_s}/#{b.to_s} have company name."
 break
-#        end
+        #end
     end
 }
 l.done
