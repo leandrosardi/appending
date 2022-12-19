@@ -5,7 +5,6 @@ require_relative './appending'
 
 l = BlackStack::LocalLogger.new(DATA_PATH+'/logs/append.log')
 
-
 l.logs 'Appending...'
 @searches.each { |search_name|
     # roll back ingested files as not ingested

@@ -1,6 +1,5 @@
 require 'csv'
-require 'email_verifier'
-require 'nokogiri'
+require 'csv-indexer'
 
 module BlackStack
     module Appending
@@ -66,13 +65,6 @@ module BlackStack
             res = BlackStack::Netting::call_get(url, params)
             parsed = JSON.parse(res.body)
             parsed['status'] == 'success'
-=begin
-            EmailVerifier.config do |config|
-                config.verifier_email = "leandro.sardi@expandedventure.com"
-            end
-            res = EmailVerifier.check(email)
-            res
-=end
         end
 
         # verify an email address
@@ -95,7 +87,6 @@ module BlackStack
                     "#{fname[0]}#{lname}@#{domain}",
                     "#{fname[0]}.#{lname}@#{domain}",
                 ].each { |email|
-#binding.pry
                     ret << email.downcase if verify(email)
                 }
             end
