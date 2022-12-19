@@ -30,7 +30,7 @@ module BlackStack
             parsed = JSON.parse(res.body)
             parsed['status'] == 'success'
         end
-
+=end
         # verify an email address
         def self.append(fname, lname, domain)
             ret = []
@@ -56,7 +56,6 @@ module BlackStack
             end
             ret
         end
-=end
 
         # This is a support method for the `append` methods.
         # The end-user should not call this method directly.
@@ -140,6 +139,8 @@ module BlackStack
             BlackStack::CSVIndexer.indexes.select { |i| i.name =~ /persona/ }.each { |i|
                 l.logs "Searching into #{i.name}... "
                 ret = i.find([cname, fname, lname], false, nil)
+                # add the name of the index in the last position of the match
+                ret[:matches].each { |m| m.unshift(i.name.to_s) }
                 # add matches to the list
                 total[:matches] += ret[:matches]
                 # sum the total files and the total enlapsed seconds                
@@ -155,9 +156,42 @@ module BlackStack
         # Append all the information in the index row.
         def self.find_company(cname)
             l = BlackStack::Appending.logger || BlackStack::DummyLogger.new
-            # TODO: Code Me!
+            total = {
+                :matches => [],
+                :enlapsed_seconds => 0,
+                :files_processed => 0,
+            }
+            # looking for a record that matches with first name, last name and company name
+            appends = []
+            enlapsed_seconds = 0
+            files_processed = 0
+            BlackStack::CSVIndexer.indexes.select { |i| i.name =~ /persona/ }.each { |i|
+                l.logs "Searching into #{i.name}... "
+                ret = i.find([cname], true, nil)
+                # add the name of the index in the last position of the match
+                ret[:matches].each { |m| m.unshift(i.name.to_s) }
+                # add matches to the list
+                total[:matches] += ret[:matches]
+                # sum the total files and the total enlapsed seconds                
+                total[:enlapsed_seconds] += ret[:enlapsed_seconds]
+                total[:files_processed] += ret[:files_processed]
+                l.done
+            }
+            # return
+            total
         end
 
+        # From a given match (with the name of its index in the first position), get the value of a field by its name.
+        def self.value(match, field)
+            # get the index_name
+            index_name = match[0]
+            # get the index descriptor
+            index = BlackStack::CSVIndexer.indexes.select { |i| i.name == index_name }.first
+            # get position of the field into the hash descriptior
+            k = index.mapping.to_a.map { |m| m[0].to_s }.index(field.to_s)
+            # get the field value
+            match[k+3].to_s
+        end
 
     end # Appending
 end # BlackStack
