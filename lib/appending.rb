@@ -189,8 +189,21 @@ module BlackStack
             index = BlackStack::CSVIndexer.indexes.select { |i| i.name == index_name }.first
             # get position of the field into the hash descriptior
             k = index.mapping.to_a.map { |m| m[0].to_s }.index(field.to_s)
+            # return nil if the field is not found
+            return nil if k.nil?
             # get the field value
             match[k+3].to_s
+        end
+
+        # From a given match (with the name of its index in the first position), get the value of a field by its name.
+        def self.emails(match)
+            keys = [:email, :email1, :email2]
+            ret = []
+            keys.each { |k|
+                v = BlackStack::Appending.value(match, k)
+                ret << v if v
+            }
+            ret
         end
 
     end # Appending

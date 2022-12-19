@@ -33,6 +33,13 @@ p BlackStack::Appending.value(h, :email)
 # => "bezosj@amazon.com"
 ```
 
+**Example:** Get the email of all the persons found with same first name, last name and company name.
+
+```ruby
+p BlackStack::Appending.find_person('Jeff', 'Bezos', 'Amazon')[:matches].map { |h| BlackStack::Appending.value(h, :email) }
+# => ["bezosj@amazon.com", "jbezos@amazon.com", "yangb@amazon.com", "jeffbezos@amazon.com", "resolution@amazon.com", "jeffreybezos@amazon.com", "jeffery.bezos@amazon.com", "jeffreybe@amazon.com", "jeffery@amazon.com"]
+```
+
 ## 1. Installation
 
 ```bash
