@@ -1,56 +1,20 @@
 require 'csv'
 require 'csv-indexer'
+require 'simple_cloud_logging'
 
 module BlackStack
     module Appending
-        # This class is used to parse the HTML files downloaded from Sales Navigator and other sources.
-        module Parser
-            # parse search results pages from sales navigator, and save the company name and full name into a CSV file
-            def self.parse_sales_navigator_result_pages(search_name, l=nil)
-                # create logger if not passed
-                l = BlackStack::DummyLogger.new(nil) if l.nil?
-                # define output filename
-                output_file = "#{DATA_PATH}/searches/#{search_name}.csv" # the output file
-                raise 'Output file already exists.' if File.exists?(output_file)
-                output = File.open(output_file, 'w')
-                # parse
-                i = 0
-                source = "#{DATA_PATH}/searches/#{search_name}/*.html" # the files to be imported
-                Dir.glob(source).each do |file|
-                    doc = Nokogiri::HTML(open(file))
-                    lis = doc.xpath('//li[contains(@class, "artdeco-list__item")]')    
-                    lis.each { |li|
-                        i += 1
-                        doc2 = Nokogiri::HTML(li.inner_html)
-                        # this is where to find the full name of the lead
-                        n1 = doc2.xpath('//div[contains(@class,"artdeco-entity-lockup__title")]/a/span').first
-                        # this is where to find the name of the company, when it has a link to a linkedin company page
-                        n2 = doc2.xpath('//div[contains(@class,"artdeco-entity-lockup__subtitle")]/a').first
-                        # this is where to find the name of the company, when it has not a link to a linkedin company page
-                        company_name = nil
-                        if n2
-                            company_name = n2.text
-                        else
-                            n2 = doc2.xpath('//div[contains(@class,"artdeco-entity-lockup__subtitle")]').first 
-                            if n2
-                                company_name = n2.text.split("\n").reject { |s| s.strip.empty? }.last.strip
-                            end
-                        end
-                        # add the information to the output file
-                        line = []
-                        line << "\"#{n1.text.strip.gsub('"', '')}\"" if n1
-                        line << "\"#{company_name.strip.gsub('"', '')}\"" if company_name
-                        l.logs "#{i.to_s}, #{line.join(',')}... "
-                        output.puts line.join(',')
-                        output.flush
-                        l.done
-                    }    
-                end    
-                # close output file    
-                output.close
-            end # def self.parse_sales_navigator_result_pages(search_name)
-        end # module Parser
+        @@logger = nil
 
+        def self.set_logger(logger)
+            @@logger = logger
+        end
+
+        def self.logger
+            @@logger
+        end
+
+=begin # TODO: Move this to a `verification` gem
         # return true if the domain get any random address as valid
         def self.catch_all?(domain)
             BlackStack::Appending.verify("008e77980535470e848a4ca859a83db0@#{domain}")
@@ -92,19 +56,26 @@ module BlackStack
             end
             ret
         end
+=end
 
+        # This is a support method for the `append` methods.
+        # The end-user should not call this method directly.
         def self.cleanup_fname(name)
             return '' if name.nil?
             a = name.split(/[^a-zA-Z]/)
             a.size > 0 ? a[0] : ''
         end
 
+        # This is a support method for the `append` methods.
+        # The end-user should not call this method directly.
         def self.cleanup_lname(name)
             return '' if name.nil?
             a = name.split(/[^a-zA-Z]/)
             a.size > 1 ? a[1] : ''
         end
 
+        # This is a support method for the `append` methods.
+        # The end-user should not call this method directly.
         def self.cleanup_company(company)
             return '' if company.nil?
             ret = ''
@@ -132,5 +103,61 @@ module BlackStack
             # return
             ret
         end
+
+        # Find a person in the indexes by its full name and company name.
+        # Append all the information in the index row.
+        def self.find_person_with_full_name(name, cname)
+            l = BlackStack::Appending.logger || BlackStack::DummyLogger.new
+
+            l.logs "Guessing fname from #{name}... "
+            fname = BlackStack::Appending::cleanup_fname(name)
+            l.logf fname
+
+            l.logs "Guessing lname from #{name}... "
+            lname = BlackStack::Appending::cleanup_lname(name)
+            l.logf lname
+
+            BlackStack::Appending.find_person(fname, lname, cname)
+        end
+
+        # Find a person in the indexes by its first name, last name and company name.
+        # Append all the information in the index row.
+        def self.find_person(fname, lname, cname)
+            l = BlackStack::Appending.logger || BlackStack::DummyLogger.new
+            total = {
+                :matches => [],
+                :enlapsed_seconds => 0,
+                :files_processed => 0,
+            }
+            # cleaning up company name
+            l.logs "Cleaning up company name #{cname}... "
+            cname = BlackStack::Appending::cleanup_company(cname)
+            l.logf cname
+            # looking for a record that matches with first name, last name and company name
+            appends = []
+            enlapsed_seconds = 0
+            files_processed = 0
+            BlackStack::CSVIndexer.indexes.select { |i| i.name =~ /persona/ }.each { |i|
+                l.logs "Searching into #{i.name}... "
+                ret = i.find([cname, fname, lname], false, nil)
+                # add matches to the list
+                total[:matches] += ret[:matches]
+                # sum the total files and the total enlapsed seconds                
+                total[:enlapsed_seconds] += ret[:enlapsed_seconds]
+                total[:files_processed] += ret[:files_processed]
+                l.done
+            }
+            # return
+            total
+        end
+
+        # Find a company in the indexes by its first name, last name and company name.
+        # Append all the information in the index row.
+        def self.find_company(cname)
+            l = BlackStack::Appending.logger || BlackStack::DummyLogger.new
+            # TODO: Code Me!
+        end
+
+
     end # Appending
 end # BlackStack

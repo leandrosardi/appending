@@ -1,15 +1,2 @@
-# ignore any file inside the ./sources directory, except the README.md file
-sources/*
-!sources/README.md
-
-# ignore any file inside the ./indexes directory, except the README.md file
-indexes/*
-!indexes/README.md
-
-# ignore any file inside the ./logs directory, except the README.md file
-logs/*
-!logs/README.md
-
-# ignore any file inside the ./indexes directory, except the README.md file
-searches/*
-!searches/README.md
+# ignore any log file
+*.log
