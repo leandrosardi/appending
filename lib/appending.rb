@@ -192,9 +192,6 @@ module BlackStack
         def self.append(fname, lname, domain)
             ret = []
             if !catch_all?(domain)
-                EmailVerifier.config do |config|
-                    config.verifier_email = "leandro.sardi@expandedventure.com"
-                end
                 [
                     "#{fname}@#{domain}",
                     "#{lname}@#{domain}",
@@ -208,7 +205,7 @@ module BlackStack
                     "#{fname[0]}#{lname}@#{domain}",
                     "#{fname[0]}.#{lname}@#{domain}",
                 ].each { |email|
-                    ret << email.downcase if verify(email)
+                    ret << email.downcase if BlackStack::Appending.verify(email)
                 }
             end
             ret
