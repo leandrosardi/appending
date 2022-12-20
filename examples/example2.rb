@@ -1,4 +1,4 @@
-require_relative '../lib/appending'
+require 'appending'
 require_relative './config'
 
 l = BlackStack::LocalLogger.new('./example2.log')
