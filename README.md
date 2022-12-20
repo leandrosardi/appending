@@ -1,6 +1,6 @@
-UNDER CONSTRUCTIONS
+![GitHub issues](https://img.shields.io/github/issues/leandrosardi/appending) ![GitHub](https://img.shields.io/github/license/leandrosardi/appending) ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/leandrosardi/appending) ![GitHub last commit](https://img.shields.io/github/last-commit/leandrosardi/appending)
 
-# appending
+# Appending
 
 Information-Appending-Service (or just **Appending**) is a Ruby gem for data enrichment of people and companies. 
 
