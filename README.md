@@ -7,7 +7,7 @@ Information-Appending-Service (or just **Appending**) is a Ruby gem for data enr
 **Example:** Find a person from its **first name**, **last name** and **company name**.
 
 ```ruby
-# Getting looking for possible emails of Elon Musk 
+# Looking for possible emails of Elon Musk 
 p BlackStack::Appending.find_persons('Elon', 'Musk', 'SpaceX').map { |res| 
     res.emails 
 }.flatten.uniq.reject { |email|
