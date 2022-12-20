@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'appending'
-  s.version     = '1.1'
+  s.version     = '1.2'
   s.date        = '2022-12-20'
   s.summary     = "Appending is a Ruby gem for data enrichment of people and companies."
   s.description = "Appending is a Ruby gem for data enrichment of people and companies."
