@@ -1,4 +1,5 @@
 require 'csv'
+require 'email_verifier'
 require 'csv-indexer'
 require 'simple_cloud_logging'
 
@@ -164,11 +165,19 @@ module BlackStack
         end
 
         # return true if the domain get any random address as valid
+        #
+        # This is a support method for the `append` methods.
+        # The end-user should not call this method directly.
+        # 
         def self.catch_all?(domain)
             BlackStack::Appending.verify("008e77980535470e848a4ca859a83db0@#{domain}")
         end
 
         # verify an email address using the AWS IP address of our website, wich is more reliable
+        #
+        # This is a support method for the `append` methods.
+        # The end-user should not call this method directly.
+        # 
         def self.verify(email)
             url = @@verifier_url
             params = {
@@ -333,6 +342,51 @@ module BlackStack
             h[:matches].map { |m| BlackStack::Appending::Result.new(m) }
         end
 
+        def self.find_verified_emails(fname, lname, cname)
+            l = BlackStack::Appending.logger || BlackStack::DummyLogger.new
+            emails = []
+            domains = []
+            verified_emails = []
+            # get lead emails from in the indexes
+            l.logs ("Searching index emails... ")
+                emails = BlackStack::Appending.find_persons(fname, lname, cname).map { |res| 
+                    res.emails 
+                }.flatten.uniq.reject { |email|
+                    email.to_s.empty?
+                }
+            l.done
+            # get company domains from the indexes
+            l.logs ("Searching index domains... ")
+                domains = BlackStack::Appending.find_persons_by_company(cname).map { |res| 
+                    res.company_domains
+                }.flatten.reject { |email|
+                    email.to_s.empty?
+                }.map { |domain|
+                    # normalize domain
+                    domain.to_s.gsub('www.', '').downcase
+                }.uniq
+            l.done
+            # verify all the emails found in the indexes
+            l.logs ("Verifying index emails... ")
+            emails.each { |email|
+                l.logs "Verifying #{email}... "
+                domain = email.split('@').last
+                verified_emails << email if BlackStack::Appending.verify(email) && !BlackStack::Appending.catch_all?(domain)
+                l.done
+            }
+            l.done
+            # appending with domains found in the indexes
+            l.logs ("Appending with domains... ")
+            domains.each { |domain|
+                l.logs "Appending with #{domain}... "
+                verified_emails += BlackStack::Appending.append(fname, lname, domain)
+                l.done
+            }
+            l.done
+            # return 
+            verified_emails.uniq
+        end
+
         # 
         class Result
             # array of values.
@@ -355,6 +409,11 @@ module BlackStack
                 return nil if k.nil?
                 # get the field value
                 match[k+3].to_s
+            end
+
+            # Call value() method.
+            def val(field)
+                self.value(field)
             end
 
             # From a given match (with the name of its index in the first position), get the email addresses.

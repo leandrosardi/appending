@@ -12,6 +12,7 @@ Gem::Specification.new do |s|
   s.homepage    = 'https://rubygems.org/gems/appending'
   s.license     = 'MIT'
   s.add_runtime_dependency 'csv', '~> 3.2.2', '>= 3.2.2'
+  s.add_runtime_dependency 'email_verifier', '~> 0.1.0', '>= 0.1.0'
   s.add_runtime_dependency 'blackstack-core', '~> 1.2.3', '>= 1.2.3'
   s.add_runtime_dependency 'blackstack-nodes', '~> 1.2.11', '>= 1.2.11'
   s.add_runtime_dependency 'blackstack-deployer', '~> 1.2.24', '>= 1.2.24'
