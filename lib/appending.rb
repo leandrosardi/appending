@@ -342,7 +342,7 @@ module BlackStack
             h[:matches].map { |m| BlackStack::Appending::Result.new(m) }
         end
 
-        def self.find_verified_emails_with_fullname(full_name, cname)
+        def self.find_verified_emails_with_full_name(full_name, cname)
             l = BlackStack::Appending.logger || BlackStack::DummyLogger.new
 
             l.logs "Guessing fname from #{name}... "
