@@ -1,13 +1,5 @@
 DATA_PATH = '/home/leandro/.appending'
 
-# searches stored in the search folder
-@searches = [
-#    'Padilla.Trust-And-Safety.10',
-    'APG.1',
-    'Magnum.1',
-    'APG.2',
-]
-
 # 
 BlackStack::CSVIndexer.add_indexation({
     :name => 'ix.linkedin_url.us.01',
@@ -577,4 +569,20 @@ BlackStack::CSVIndexer.add_indexation({
         :company_revenue => 13,
         :company_headcount => 14, 
     },
+})
+
+
+# 
+BlackStack::Appending.set({
+    # what are the indexes you will use for this appending?
+    :indexes => BlackStack::CSVIndexer.indexes.select { |i| i.name =~ /persona/ },
+    
+    # for email verification
+    :verifier_url => 'https://connectionsphere.com/api1.0/emails/verify.json',
+    :verifier_api_key => '<write your ConnectionSphere API-Key here>',
+
+    # funding specific data
+    :email_fields => [:email, :email1, :email2],
+    :phone_fields => [:phone, :phone1, :phone2],
+    :company_domain_fields => [:company_domain],
 })

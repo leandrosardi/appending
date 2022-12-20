@@ -7,28 +7,28 @@ Information-Appending-Service (or just **Appending**) is a Ruby gem for data enr
 **Example:** Find a person from its **first name**, **last name** and **company name**.
 
 ```ruby
-p BlackStack::Appending.find_person('Elon', 'Musk', 'SpaceX')
+p BlackStack::Appending.find_persons('Elon', 'Musk', 'SpaceX')
 # => {:matches=>[["ix.persona.us.06", "spacex|elon|musk", "45227", "elon", "musk", "linkedin.com/in/elon-musk-007a911a6", ...
 ```
 
 You can also try with the full name, and let Appending to guess the first name and last name.
 
 ```ruby
-p BlackStack::Appending.find_person_with_full_name('Elon Musk', 'SpaceX')
+p BlackStack::Appending.find_persons_with_full_name('Elon Musk', 'SpaceX')
 # => {:matches=>[["ix.persona.us.06", "spacex|elon|musk", "45227", "elon", "musk", "linkedin.com/in/elon-musk-007a911a6", ...
 ```
 
 **Example:** Find people beloning a company from the **company's name**.
 
 ```ruby
-p BlackStack::Appending.find_company('SpaceX')
+p BlackStack::Appending.find_persons_by_company('SpaceX')
 # => {:matches=>[["ix.persona.us.01", "spacex|alexander|volkov", "57874", "alexander", "volkov", "linkedin.com/i...
 ```
 
 **Example:** Get a field of a found record.
 
 ```ruby
-h = BlackStack::Appending.find_person('Jeff', 'Bezos', 'Amazon')[:matches].first
+h = BlackStack::Appending.find_persons('Jeff', 'Bezos', 'Amazon')[:matches].first
 p BlackStack::Appending.value(h, :email)
 # => "bezosj@amazon.com"
 ```
@@ -36,7 +36,7 @@ p BlackStack::Appending.value(h, :email)
 **Example:** Get the email of all the persons found with same first name, last name and company name.
 
 ```ruby
-p BlackStack::Appending.find_person('Jeff', 'Bezos', 'Amazon')[:matches].map { |h| BlackStack::Appending.value(h, :email) }
+p BlackStack::Appending.find_persons('Jeff', 'Bezos', 'Amazon')[:matches].map { |h| BlackStack::Appending.value(h, :email) }
 # => ["bezosj@amazon.com", "jbezos@amazon.com", "yangb@amazon.com", "jeffbezos@amazon.com", "resolution@amazon.com", "jeffreybezos@amazon.com", "jeffery.bezos@amazon.com", "jeffreybe@amazon.com", "jeffery@amazon.com"]
 ```
 
